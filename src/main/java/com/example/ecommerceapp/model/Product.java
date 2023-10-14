@@ -1,6 +1,5 @@
 package com.example.ecommerceapp.model;
 
-import com.example.ecommerceapp.Inventory;
 import jakarta.persistence.*;
 import lombok.*;
 

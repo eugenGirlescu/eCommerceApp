@@ -1,10 +1,10 @@
 package com.example.ecommerceapp.model;
 
-import com.example.ecommerceapp.model.Address;
-import com.example.ecommerceapp.model.User;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
+
+import java.util.List;
 
 @Entity
 @Table(name = "tbl_order")
@@ -22,5 +22,8 @@ public class Order {
     @ManyToOne(optional = false)
     @JoinColumn(name = "address_id", nullable = false)
     private Address address;
+
+    @OneToMany(mappedBy = "order", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    private List<OrderQuantity> quantitiess;
 
 }

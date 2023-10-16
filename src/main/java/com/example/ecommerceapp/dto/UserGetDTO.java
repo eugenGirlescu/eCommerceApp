@@ -1,12 +1,17 @@
 package com.example.ecommerceapp.dto;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
-public class UserDTO {
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
+public class UserGetDTO {
     private String userName;
     private String email;
-    private String password;
     private String firstName;
     private String lastName;
 }

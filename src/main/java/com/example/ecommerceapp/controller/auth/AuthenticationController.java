@@ -1,8 +1,12 @@
 package com.example.ecommerceapp.controller.auth;
 
-import com.example.ecommerceapp.dto.UserDTO;
+import com.example.ecommerceapp.dto.UserGetDTO;
+import com.example.ecommerceapp.dto.UserPostDTO;
+import com.example.ecommerceapp.model.User;
 import com.example.ecommerceapp.service.UserService;
-import lombok.RequiredArgsConstructor;
+import jakarta.validation.Valid;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -10,13 +14,16 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/auth")
-@RequiredArgsConstructor
 public class AuthenticationController {
 
     private final UserService userService;
 
+    public AuthenticationController(UserService userService) {
+        this.userService = userService;
+    }
+
     @PostMapping("/register")
-    public void registerUser(@RequestBody UserDTO userDTO) {
-        userService.registerUser(userDTO);
+    public ResponseEntity<UserGetDTO> registerUser( @Valid @RequestBody UserPostDTO userPostDTO) {
+        return new ResponseEntity<>(userService.registerUser(userPostDTO), HttpStatus.OK);
     }
 }

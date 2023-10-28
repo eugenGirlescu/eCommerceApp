@@ -4,5 +4,8 @@ E-Commerce backend app to sell products online and to have an inventory manageme
 
 Tools used for this app:
 
-Springboot
-MySql
+- Springboot
+- MySql
+- Hibernate
+- Maven
+- Java Mail Sender

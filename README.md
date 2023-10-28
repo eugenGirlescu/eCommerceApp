@@ -8,3 +8,4 @@ Tools used for this app:
 - MySql
 - Hibernate
 - Maven
+- Java Mail Sender

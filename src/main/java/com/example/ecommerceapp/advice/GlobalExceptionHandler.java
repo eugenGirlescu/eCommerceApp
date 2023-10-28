@@ -1,6 +1,10 @@
 package com.example.ecommerceapp.advice;
 
+import com.example.ecommerceapp.exception.EmailFailureException;
 import com.example.ecommerceapp.exception.UserAlreadyExistsException;
+import com.example.ecommerceapp.exception.UserNameOrPasswordNotFoundException;
+import com.example.ecommerceapp.exception.UserNotVerifiedException;
+import jakarta.validation.constraints.Email;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
@@ -41,5 +45,24 @@ public class GlobalExceptionHandler {
         response.put("errors", errors);
 
         return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(UserNotVerifiedException.class)
+    public ResponseEntity<String> handleUserNotVerifiedException(UserNotVerifiedException ex) {
+        if (ex.isNewEmailSent()) {
+            return new ResponseEntity<>("User not verified. A new verification email has been sent.", HttpStatus.UNAUTHORIZED);
+        } else {
+            return new ResponseEntity<>("User not verified.", HttpStatus.FORBIDDEN);
+        }
+    }
+
+    @ExceptionHandler(EmailFailureException.class)
+    public ResponseEntity<String> handleEmailFailureException(EmailFailureException ex) {
+        return new ResponseEntity<>(ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @ExceptionHandler(UserNameOrPasswordNotFoundException.class)
+    public ResponseEntity<String> handleUserNameOrPasswordNotFoundException(UserNameOrPasswordNotFoundException ex) {
+        return new ResponseEntity<>("User or password are not ok.", HttpStatus.NOT_FOUND);
     }
 }

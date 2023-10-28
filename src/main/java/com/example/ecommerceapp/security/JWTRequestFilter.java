@@ -1,7 +1,6 @@
 package com.example.ecommerceapp.security;
 
 import com.auth0.jwt.exceptions.JWTDecodeException;
-import com.example.ecommerceapp.dto.UserGetDTO;
 import com.example.ecommerceapp.model.User;
 import com.example.ecommerceapp.repository.UserRepository;
 import com.example.ecommerceapp.service.JWTService;
@@ -26,7 +25,6 @@ import java.util.Optional;
 public class JWTRequestFilter extends OncePerRequestFilter {
     private final JWTService jwtService;
     private final UserRepository userRepository;
-    private final UserService userService;
     private static final Integer SKIP_BEARER = 7;
 
     @Override
@@ -37,13 +35,18 @@ public class JWTRequestFilter extends OncePerRequestFilter {
             try {
                 String userName = jwtService.getUserName(token);
                 Optional<User> userFromDb = userRepository.findByUserNameIgnoreCase(userName);
-                if(userFromDb.isPresent()) {
+                if (userFromDb.isPresent()) {
                     UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userFromDb.get(), null, new ArrayList());
                     authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                     SecurityContextHolder.getContext().setAuthentication(authentication);
+                } else {
+                    response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                    response.getWriter().write("Unauthorized");
+                    return;
                 }
             } catch (JWTDecodeException exception) {
-
+                response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                response.getWriter().write("Invalid JWT");
             }
         }
         filterChain.doFilter(request, response);

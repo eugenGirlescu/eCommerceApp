@@ -7,6 +7,7 @@ import com.example.ecommerceapp.dto.UserPostDTO;
 import com.example.ecommerceapp.model.User;
 import com.example.ecommerceapp.service.UserService;
 import jakarta.validation.Valid;
+import org.apache.coyote.Response;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -23,17 +24,25 @@ public class AuthenticationController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<UserGetDTO> registerUser( @Valid @RequestBody UserPostDTO userPostDTO) {
+    public ResponseEntity<UserGetDTO> registerUser(@Valid @RequestBody UserPostDTO userPostDTO) {
         return new ResponseEntity<>(userService.registerUser(userPostDTO), HttpStatus.OK);
     }
 
     @PostMapping("/login")
     public ResponseEntity<UserLoginResponseDTO> loginUser(@RequestBody UserLoginDTO userLoginDTO) {
         String jwt = userService.loginUser(userLoginDTO);
-        if(jwt == null) {
+        if (jwt == null) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-        return new ResponseEntity<>(new UserLoginResponseDTO(jwt),HttpStatus.OK);
+        return new ResponseEntity<>(new UserLoginResponseDTO(jwt), HttpStatus.OK);
+    }
+
+    @PostMapping("/verify")
+    public ResponseEntity<HttpStatus> verifyEmail(@RequestParam String token) {
+        if (userService.verifyUser(token)) {
+            return new ResponseEntity<>(HttpStatus.OK);
+        }
+        return new ResponseEntity<>(HttpStatus.CONFLICT);
     }
 
     @GetMapping("/me")

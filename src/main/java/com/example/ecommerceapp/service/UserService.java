@@ -77,8 +77,10 @@ public class UserService {
                     throw new UserNotVerifiedException(resend);
                 }
             }
+        } else {
+            throw new UserNameOrPasswordNotFoundException();
         }
-        throw new UserNameOrPasswordNotFoundException();
+        return null;
     }
 
     @Transactional

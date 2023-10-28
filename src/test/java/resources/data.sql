@@ -1,0 +1,1 @@
+INSERT INTO tbl_user(email,first_name,last_name,password,username,email_verified) VALUES('userA@yahoo.com', 'first_user', 'last_name_user', '$2a$10$dvXnBrNPRlDNLFZz9pfRouOZ7Ji/1jg24NRH/WSGUWfBM0Lql7T6C', 'UserA', true),('userB@yahoo.com', 'first_userB', 'last_name_userB', '$2a$10$dvXnBrNPRlDNLFZz9pfRouOZ7Ji/1jg24NRH/WSGUWfBM0Lql7T6C', 'UserB', false);
